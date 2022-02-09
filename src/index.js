@@ -15,10 +15,10 @@ const taskIds = ["id422", "id2444", "id424", "id4242"];
 const runner = new TaskRunner();
 
 (async function () {
-  const resolvedTasks = [];
+  const resolvedTasksIds = [];
 
   function processResolvedTask(id, resolver) {
-    resolvedTasks.push(id);
+    resolvedTasksIds.push(id);
     return resolver(id);
   }
 
@@ -32,24 +32,16 @@ const runner = new TaskRunner();
     })
   );
 
-  const resolvedTasks1 = [ 'id422', 'id424', 'id2444', 'id4242' ];
-  const tasksIndexes = [ 0, 1, 2, 3 ];
-                    // [ 0, 2, 1, 3 ] => [0, 1, -1, 3]
-                    // [ 3, 2, 1, 0 ] => [0, -1, -1, -1]
-  const resolvedTasks2 = [ 'id4242', 'id424', 'id2444', 'id422' ];
-
-  const res = tasks.reduce((acc, id, i) => {
-    const prevTaskId = tasks[i - 1];
-    const resolvedIndex = resolvedTasks2.indexOf(id);
+  const res = resolvedTasksIds.reduce((acc, id, i) => {
+    const originalIndex = tasks.indexOf(id);
+    const prevOriginalIndex = tasks.indexOf(resolvedTasksIds[i - 1]);
     console.log({
       tasks,
-      resolvedTasks2,
-      i,
-      resolvedIndex,
-      id,
-      prevTaskId,
+      resolvedTasksIds,
+      originalIndex,
+      prevOriginalIndex
     });
-    if (resolvedIndex < i) {
+    if (prevOriginalIndex > originalIndex) {
       acc.push(-1);
       return acc;
     }
@@ -57,7 +49,6 @@ const runner = new TaskRunner();
     return acc;
   }, []);
   console.log('res', res);
-  console.log('expected', [0, 1, -1, 3]);
 })()
 
 
