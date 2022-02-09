@@ -16,9 +16,11 @@ const runner = new TaskRunner();
 
 (async function () {
   const resolvedTasksIds = [];
+  const resolvedTasksIndexes = [];
 
   function processResolvedTask(id, resolver) {
     resolvedTasksIds.push(id);
+    resolvedTasksIndexes.push(taskIds.indexOf(id));
     return resolver(id);
   }
 
@@ -38,6 +40,7 @@ const runner = new TaskRunner();
     console.log({
       tasks,
       resolvedTasksIds,
+      resolvedTasksIndexes,
       originalIndex,
       prevOriginalIndex
     });
